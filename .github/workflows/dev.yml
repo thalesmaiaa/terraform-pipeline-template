@@ -12,11 +12,6 @@ permissions:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
-    secrets:
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+    secrets: inherit
     with:
       environment: dev
-      aws-assume-role-arn: 'arn:aws:iam::590183673600:role/github-actions-pipeline'
-      aws-region: ${ secrets.AWS_REGION }
-      aws-statefile-s3-bucket: 'thalesmaiaa-sa-east-1-terraform-statefile'
-      aws-lock-dynamodb-table: 'thalesmaiaa-sa-east-1-terraform-lock'
