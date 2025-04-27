@@ -14,3 +14,7 @@ jobs:
     uses: ./.github/workflows/terraform.yml
     with:
       environment: dev
+      aws-assume-role-arn: 'arn:aws:iam::590183673600:role/github-actions-pipeline'
+      aws-region: 'sa-east-1'
+      aws-statefile-s3-bucket: 'thalesmaiaa-sa-east-1-terraform-statefile'
+      aws-lock-dynamodb-table: 'thalesmaiaa-sa-east-1-terraform-lock'
