@@ -18,3 +18,4 @@ jobs:
       aws-region: 'sa-east-1'
       aws-statefile-s3-bucket: 'thalesmaiaa-sa-east-1-terraform-statefile'
       aws-lock-dynamodb-table: 'thalesmaiaa-sa-east-1-terraform-lock'
+      test: ${{ secrets.AWS_REGION }}
