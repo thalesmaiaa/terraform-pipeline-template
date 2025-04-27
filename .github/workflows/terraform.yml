@@ -2,20 +2,17 @@ name: 'Terraform Workflow'
 
 on:
   workflow_call:
+    secrets:
+      AWS_REGION:
+        required: true
+      AWS_ASSUME_ROLE_ARN:
+        required: true
+      AWS_STATEFILE_S3_BUCKET:
+        required: true
+      AWS_LOCK_DYNAMODB_TABLE:
+        required: true
     inputs:
       environment:
-        type: string
-        required: true
-      aws-assume-role-arn:
-        type: string
-        required: true
-      aws-region:
-        type: string
-        required: true
-      aws-statefile-s3-bucket:
-        type: string
-        required: true
-      aws-lock-dynamodb-table:
         type: string
         required: true
 
@@ -30,6 +27,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Log region
+        run: echo "AWS_REGION=${{ secrets.AWS_REGION }}"
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -38,9 +40,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ inputs.aws-assume-role-arn }}
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ inputs.aws-region }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Read destroy configuration
         id: read-destroy-config
@@ -51,10 +53,10 @@ jobs:
       - name: Terraform Init
         run: |
           cd infra && terraform init \
-            -backend-config="bucket=${{ inputs.aws-statefile-s3-bucket }}" \
+            -backend-config="bucket=${{ secrets.AWS_STATEFILE_S3_BUCKET }}" \
             -backend-config="key=${{ github.event.repository.name }}" \
-            -backend-config="region=${{ inputs.aws-region }}" \
-            -backend-config="dynamodb_table=${{ inputs.aws-lock-dynamodb-table }}"
+            -backend-config="region=${{ secrets.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ secrets.AWS_LOCK_DYNAMODB_TABLE }}"
 
       - name: Terraform Validate
         run: terraform validate
