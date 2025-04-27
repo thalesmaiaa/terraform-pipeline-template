@@ -12,6 +12,9 @@ permissions:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
+    secrets:
+      AWS_ASSUME_ROLE_ARN: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     with:
       environment: dev
       aws-assume-role-arn: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
