@@ -12,6 +12,8 @@ permissions:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
+    secrets:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     with:
       environment: dev
       aws-assume-role-arn: 'arn:aws:iam::590183673600:role/github-actions-pipeline'
