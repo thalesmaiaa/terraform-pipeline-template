@@ -4,7 +4,7 @@ on:
   workflow_call:
     secrets:
       AWS_REGION:
-        required: true
+        required: false
     inputs:
       environment:
         type: string
