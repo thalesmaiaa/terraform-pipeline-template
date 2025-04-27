@@ -12,12 +12,5 @@ permissions:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
-    secrets:
-      AWS_ASSUME_ROLE_ARN: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
     with:
       environment: dev
-      aws-assume-role-arn: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
-      aws-region: ${{ secrets.AWS_REGION }}
-      aws-statefile-s3-bucket: 'thalesmaiaa-sa-east-1-terraform-statefile'
-      aws-lock-dynamodb-table: 'thalesmaiaa-sa-east-1-terraform-lock'
